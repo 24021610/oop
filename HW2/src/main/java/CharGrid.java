@@ -44,7 +44,40 @@ public class CharGrid {
      * @return number of + in grid
      */
     public int countPlus() {
-        return 0; // YOUR CODE HERE
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int count = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int arm = minLength(i, j);
+                if (arm >= 2) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
+    private int countDir(int i, int j, int di, int dj, char ch) {
+        int len = 0;
+        while (i >= 0 && i < grid.length &&
+                j >= 0 && j < grid[0].length &&
+                grid[i][j] == ch) {
+            len++;
+            i += di;
+            j += dj;
+        }
+        return len;
+    }
+
+    private int minLength(int i, int j) {
+        char ch = grid[i][j];
+        int left  = countDir(i, j-1, 0, -1, ch);
+        int right = countDir(i, j+1, 0, +1, ch);
+        int up    = countDir(i-1, j, -1, 0, ch);
+        int down  = countDir(i+1, j, +1, 0, ch);
+        return Math.min(Math.min(left, right), Math.min(up, down));
+    }
+}
 }
